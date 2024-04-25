@@ -17,6 +17,7 @@ summary(water.quality)
 nrow(water.quality)
 dim(water.quality)
 
+water.quality_na_dropped <- na.omit(water.quality)
 
 # Printing out all the NAN counts
 sum(apply(water.quality, 1, anyNA))
@@ -338,18 +339,16 @@ partialPlot(rf.model, test_set, Hardness, 1)
 # CART Model (50/50 and 80/20 Split)
 # =========================
 
-water.quality_na_dropped <- na.omit(water.quality_original)
-
 # Split the data into training (80%) and testing (20%) sets
 set.seed(530) # for reproducibility
-train_index_80 <- createDataPartition(water.quality_na_dropped$Potability, p = 0.8, list = FALSE)
-train_data_80 <- water.quality_na_dropped[train_index_80, ]
-test_data_80 <- water.quality_na_dropped[-train_index_80, ]
+train_index_80 <- createDataPartition(water.quality$Potability, p = 0.8, list = FALSE)
+train_data_80 <- water.quality[train_index_80, ]
+test_data_80 <- water.quality[-train_index_80, ]
 
 set.seed(530) # for reproducibility
-train_index_50 <- createDataPartition(water.quality_na_dropped$Potability, p = 0.5, list = FALSE)
-train_data_50 <- water.quality_na_dropped[train_index_50, ]
-test_data_50 <- water.quality_na_dropped[-train_index_50, ]
+train_index_50 <- createDataPartition(water.quality$Potability, p = 0.5, list = FALSE)
+train_data_50 <- water.quality[train_index_50, ]
+test_data_50 <- water.quality[-train_index_50, ]
 
 # Function to train and evaluate CART model
 train_and_evaluate_CART <- function(train_data, test_data) {
@@ -430,7 +429,7 @@ train_and_evaluate_CART <- function(train_data, test_data) {
   print(paste("AUC:", auc@y.values[[1]]))
 }
 
-# Train and evaluate CART model with 80-20 split
+# Train and evaluate CART model with 80-2 0 split
 print("Results for 80-20 Split:")
 train_and_evaluate_CART(train_data_80, test_data_80)
 
